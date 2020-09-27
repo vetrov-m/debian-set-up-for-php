@@ -77,10 +77,23 @@ sudo apt install -y apache2 apache2-utils
 
 Now install PHP:
 
-on debian 10 add repo
+Add SURY PHP PPA repository
 
+Download and store PPA repository in a file on your Debian Server/Desktop. But first, download GPG key.
 
+```
+sudo apt -y install lsb-release apt-transport-https ca-certificates 
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+```
 
+Then add repository.
+
+```
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+```
+```
+sudo apt update
+```
 ```
 sudo apt install -y php7.0 libapache2-mod-php7.0 php7.0-mysql php-common php7.0-cli php7.0-common php7.0-json php7.0-opcache php7.0-readline php7.0-mbstring php7.0-xml php7.0-gd
 ```
