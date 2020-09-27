@@ -1,38 +1,48 @@
 # Debian Server Set Up for LAMP Server (Apache, PHP, MariaDB)
 
-In this guide we will set up clean Debian server for PHP projects. We will configure secure SSH connection, install from Debian repositories and from sources all needed packages and ware it together for working PHP projects.
+In this guide we will set up clean Debian server for PHP projects. install from Debian repositories and from sources all needed packages and ware it together for working PHP projects.
 
 [Youtube video guide (in Russian)](https://www.youtube.com/watch?v=LvvSlljb8Yw)
 
 ## Setup SSH
 
-```
-sudo apt-get update ; \
-sudo apt-get install -y vim mosh tmux htop git curl wget unzip zip gcc build-essential make
-```
+change user on su
 
-Configure SSH:
+add repo from yandex
 
-```
-sudo vim /etc/ssh/sshd_config
-    AllowUsers www
-    PermitRootLogin no
-    PasswordAuthentication no
-```
-
-Restart SSH server, change `www` user password:
+https://chip-and-del.ru/%D0%A0%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8-debian-10-x/
 
 ```
-sudo service ssh restart
-sudo passwd www
+nano /etc/apt/sources.list
+
+and add
+
+# buster
+ 
+deb http://security.debian.org/ buster/updates main
+# Line commented out by installer because it failed to verify:
+deb-src http://security.debian.org/ buster/updates main
+ 
+deb http://mirror.yandex.ru/debian buster main
+deb-src http://mirror.yandex.ru/debian buster main
+ 
+deb http://mirror.yandex.ru/debian buster-updates main
+deb-src http://mirror.yandex.ru/debian buster-updates main
+ 
+deb http://mirror.yandex.ru/debian/ buster-proposed-updates main non-free contrib
+deb-src http://mirror.yandex.ru/debian/ buster-proposed-updates main non-free contrib
+ 
+# Backports
+#deb http://mirror.yandex.ru/debian buster-backports main contrib non-free
+#deb-src http://mirror.yandex.ru/debian buster-backports main contrib non-free
 ```
 
-## ZSH
+```
+apt-get update -y  && apt-get dist-upgrade -y && apt-get autoremove -y && apt-get autoclean -y
+```
 
 ```
-sudo apt-get install -y zsh
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+apt-get install -y htop git curl wget unzip zip gcc
 ```
 
 ## MariaDB
@@ -63,14 +73,13 @@ Install Apache, create `code` directory in user home directory:
 
 ```
 sudo apt install -y apache2 apache2-utils
-cd
-mkdir code
-cd code
-mkdir newproject
-sudo chown www-data:www-data /home/www/code/ -R
 ```
 
 Now install PHP:
+
+on debian 10 add repo
+
+
 
 ```
 sudo apt install -y php7.0 libapache2-mod-php7.0 php7.0-mysql php-common php7.0-cli php7.0-common php7.0-json php7.0-opcache php7.0-readline php7.0-mbstring php7.0-xml php7.0-gd
