@@ -67,7 +67,7 @@ CREATE USER new_db_user IDENTIFIED BY 'some_password';
 GRANT ALL privileges ON new_db_name .* TO new_db_user;
 ```
 
-## Apache, PHP
+## Apache
 
 Install Apache, create `code` directory in user home directory:
 
@@ -75,7 +75,7 @@ Install Apache, create `code` directory in user home directory:
 sudo apt install -y apache2 apache2-utils
 ```
 
-Now install PHP:
+## Now install PHP:
 
 Add SURY PHP PPA repository
 
@@ -105,7 +105,40 @@ sudo a2enmod php7.0
 sudo systemctl restart apache2
 ```
 
-Configure Apache:
+if a2enmod php7.0 message on 'command not found' 
+
+It's a PATH variable bug.
+
+Try this:
+
+```
+apt-get install mlocate
+updatedb
+locate a2enmod
+```
+
+the output is:
+```
+/usr/sbin/a2enmod
+```
+
+then
+```
+grep PATH /etc/profile
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/sbin"
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+Export PATH
+```
+
+As you can see, /usr/sbin in not in root $PATH
+
+So, edit the first line to
+```
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/sbin"
+```
+
+## Configure Apache:
 
 ```
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/newproject.conf
