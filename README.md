@@ -138,6 +138,12 @@ So, edit the first line to
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/sbin"
 ```
 
+if you need disable phpmod
+
+```
+sudo a2dismod
+```
+
 ## Configure Apache:
 
 ```
